@@ -1,6 +1,7 @@
 {
   "name": "SimpleApp",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.2"
   },
   "devDependencies": {

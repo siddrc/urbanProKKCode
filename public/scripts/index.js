@@ -4,7 +4,6 @@ singlPageRouting.$inject = ['$stateProvider', '$urlRouterProvider'];
 
 function singlPageRouting(stateProvider, urlRouterProvider) {
     urlRouterProvider.otherwise("/login");
-
     stateProvider.state('login', {
         url: "/login",
         controller: 'loginController',
@@ -18,6 +17,5 @@ function singlPageRouting(stateProvider, urlRouterProvider) {
         controller: 'forgotPasswordController',
         templateUrl: "views/welcome/forgotPassword.html"
     })
-}
 }
 
