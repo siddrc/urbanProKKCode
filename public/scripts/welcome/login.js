@@ -17,8 +17,8 @@ function loginController(scope,state,http) {
     //http://localhost:3000/login------
     
     http.get("/login?email="+scope.userEmail+"&password="+scope.userPassword).then(
-       function(){
-
+       function(responseFromServer){
+         console.log("responseFromServer ",responseFromServer)
        }
      
      ).catch(function(){
