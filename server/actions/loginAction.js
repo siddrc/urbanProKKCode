@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
     };
     userDataModel = userDataModel.getReadModel(readParams)
     var database = new Database();
-    userDataModel.callback = function(dBData){
+    userDataModel.callback = function(dBData){   
         res.send(dBData);
     }
     database.read(userDataModel);

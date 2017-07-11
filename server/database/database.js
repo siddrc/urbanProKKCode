@@ -1,16 +1,22 @@
-var MongoClient = require('mongodb').MongoClient
+var MongoClient = require('mongodb').MongoClient;
+var Dbprops = require("./dbprops");
+//internal objects to hide implementations
 
-function Database(){
-  this.url = "mongodb://localhost:27017/ubprokkcode";
+function DbConn(dbURL){
+  this.dbURL = dbURL;
 }
-Database.prototype.connect = function(dBparams,dbCRUDAction) {
-    MongoClient.connect(this.url, function(err, dbConnection) {
+DbConn.prototype.connect = function(dBparams,dbCRUDAction) {
+    MongoClient.connect(this.dbURL, function(err, dbConnection) {
         dbCRUDAction(dbConnection,dBparams)
     }) 
 }
+function Database(){
+  this.dbprops = new Dbprops()
+  this.dbConn = new DbConn(this.dbprops.getDbURL());
+}
+
 Database.prototype.read = function(readParams){
-	console.log("this in read ",this);
-    this.connect(readParams,find);
+   this.dbConn.connect(readParams,find);
 }
 function find(dbConnection,dBparams){
    var collection = dbConnection.collection(dBparams.collectionName);
@@ -21,12 +27,11 @@ function find(dbConnection,dBparams){
     	dBparams.callback(docs);
 
     }
-   		
     }
    )
 }
 Database.prototype.create = function(createParams){
-    connect(createParams,insert);
+    this.dbConn.connect(createParams,insert);
 }
 function insert(){
     
