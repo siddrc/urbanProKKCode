@@ -1,19 +1,22 @@
-
 var dbprops = require("./dbprops.json");
-function DbProps(){
+class DbProps {
+  constructor() {
+    this.getDbURL = function() {
+      return "mongodb://" + getDbAddress() + ":" + getDbPort() + "/" + getDbName();
+    }
 
-}
-function getDbAddress(){
-  return dbprops.dbAddress;
-}
-function getDbPort(){
- return dbprops.dbPort;
-}
-function getDbName(){
- return dbprops.dbName;
-}
+    function getDbAddress() {
+      return dbprops.dbAddress;
+    }
 
-DbProps.prototype.getDbURL = function(){
-  return "mongodb://"+getDbAddress()+":"+getDbPort()+""+getDbName();
+    function getDbPort() {
+      return dbprops.dbPort;
+    }
+
+    function getDbName() {
+      return dbprops.dbName;
+    }
+  }
+
 }
 module.exports = DbProps;

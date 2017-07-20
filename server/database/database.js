@@ -1,14 +1,15 @@
 var MongoClient = require('mongodb').MongoClient;
 var Dbprops = require("./dbprops");
-//internal objects to hide implementations
-function DbConn() {
-  //this.dbprops = new Dbprops()
-  this.dbURL = this.dbprops.getDbURL();
-}
-DbConn.prototype.connect = function(dBparams, dbCRUDAction) {
-  MongoClient.connect(this.dbURL, function(err, dbConnection) {
-    dbCRUDAction(dbConnection, dBparams)
-  })
+class DbConn {
+  constructor() {
+    this.dbprops = new Dbprops();
+    this.dbURL = this.dbprops.getDbURL();
+  }
+  connect(dBparams, dbCRUDAction) {
+    MongoClient.connect(this.dbURL, function(err, dbConnection) {
+      dbCRUDAction(dbConnection, dBparams)
+    })
+  }
 }
 class Database {
   constructor() {
@@ -19,6 +20,7 @@ class Database {
     this.createHandler = function(dbConnection, dBparams) {
       insert(dbConnection, dBparams);
     }
+    var that = this;
 
     function find(dbConnection, dBparams) {
       var collection = dbConnection.collection(dBparams.collectionName);
@@ -40,30 +42,21 @@ class Database {
           dbCRUDParams.callback(responseObject, dbCRUDParams.theThisInstance);
         });
     }
-    function cleanUp(){
+
+    function cleanUp() {
       databaseConnection.close();
       dbCRUDParams.callback(responseObject, dbCRUDParams.theThisInstance);
     }
   }
+
   read(readParams) {
     this.dbConn.connect(readParams, this.findHandler);
   }
   create(createParams) {
     this.dbConn.connect(createParams, this.createHandler);
   }
+  //Kartik TODO: delete, update , count...
+
 
 }
-
-
-
-Database.prototype.create = function(createParams) {
-
-}
-
-function insert() {
-
-}
-//Create
-//Delete
-//Update
 module.exports = Database;
